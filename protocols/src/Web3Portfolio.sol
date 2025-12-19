@@ -17,13 +17,13 @@ contract Web3Portfolio is Ownable, Pausable {
         uint256 lastUpdated;
     }
 
-    // username => portfolio
-    mapping(string => Portfolio) private portfolios;
+    // usernameHash => portfolio
+    mapping(bytes32 => Portfolio) private portfolios;
 
-    // wallet => username
-    mapping(address => string) private addressToPortfolio;
+    // wallet => usernameHash
+    mapping(address => bytes32) private addressToUsername;
 
-    event PortfolioCreated(address indexed owner, string indexed userName);
+    event PortfolioCreated(address indexed owner, string userName);
     event PortfolioUpdated(address indexed owner, string userName);
     event PortfolioVisibilityUpdated(address indexed owner, string userName, bool isPrivate);
     event DonationReceived(address indexed donor, uint256 amount);
@@ -31,13 +31,24 @@ contract Web3Portfolio is Ownable, Pausable {
 
     constructor() Ownable(msg.sender) {}
 
-    function createPortfolio(string memory _userName, string memory _ipfsHash, bool _isPrivate) external whenNotPaused {
+    function _usernameHash(string calldata userName) internal pure returns (bytes32) {
+        return keccak256(bytes(userName));
+    }
+
+    function createPortfolio(
+        string calldata _userName,
+        string calldata _ipfsHash,
+        bool _isPrivate
+    ) external whenNotPaused {
         require(bytes(_userName).length > 0, "Username empty");
         require(bytes(_ipfsHash).length > 0, "Invalid IPFS hash");
-        require(!portfolios[_userName].exists, "Username taken");
-        require(bytes(addressToPortfolio[msg.sender]).length == 0, "Address already has portfolio");
 
-        portfolios[_userName] = Portfolio({
+        bytes32 hash = _usernameHash(_userName);
+
+        require(!portfolios[hash].exists, "Username taken");
+        require(addressToUsername[msg.sender] == bytes32(0), "Address already has portfolio");
+
+        portfolios[hash] = Portfolio({
             ethAddress: msg.sender,
             ipfsDocumentHash: _ipfsHash,
             isPrivate: _isPrivate,
@@ -46,47 +57,68 @@ contract Web3Portfolio is Ownable, Pausable {
             lastUpdated: block.timestamp
         });
 
-        addressToPortfolio[msg.sender] = _userName;
+        addressToUsername[msg.sender] = hash;
         totalPortfolios++;
 
         emit PortfolioCreated(msg.sender, _userName);
     }
 
-    function updatePortfolio(string memory _userName, string memory _newHash) external whenNotPaused {
-        require(portfolios[_userName].exists, "Portfolio not found");
-        require(portfolios[_userName].ethAddress == msg.sender, "Not portfolio owner");
+    function updatePortfolioHash(
+        string calldata _userName,
+        string calldata _newHash
+    ) external whenNotPaused {
+        bytes32 hash = _usernameHash(_userName);
+        Portfolio storage p = portfolios[hash];
+
+        require(p.exists, "Portfolio not found");
+        require(p.ethAddress == msg.sender, "Not portfolio owner");
         require(bytes(_newHash).length > 0, "Invalid IPFS hash");
 
-        portfolios[_userName].ipfsDocumentHash = _newHash;
-        portfolios[_userName].lastUpdated = block.timestamp;
+        if (keccak256(bytes(p.ipfsDocumentHash)) != keccak256(bytes(_newHash))) {
+            p.ipfsDocumentHash = _newHash;
+            p.lastUpdated = block.timestamp;
+        }
 
         emit PortfolioUpdated(msg.sender, _userName);
     }
 
-    function updatePortfolioVisibility(string memory _userName, bool _isPrivate) external whenNotPaused {
-        require(portfolios[_userName].exists, "Portfolio not found");
-        require(portfolios[_userName].ethAddress == msg.sender, "Not portfolio owner");
+    function updatePortfolioVisibility(
+        string calldata _userName,
+        bool _isPrivate
+    ) external whenNotPaused {
+        bytes32 hash = _usernameHash(_userName);
+        Portfolio storage p = portfolios[hash];
 
-        portfolios[_userName].isPrivate = _isPrivate;
-        portfolios[_userName].lastUpdated = block.timestamp;
+        require(p.exists, "Portfolio not found");
+        require(p.ethAddress == msg.sender, "Not portfolio owner");
+
+        if (p.isPrivate != _isPrivate) {
+            p.isPrivate = _isPrivate;
+            p.lastUpdated = block.timestamp;
+        }
 
         emit PortfolioVisibilityUpdated(msg.sender, _userName, _isPrivate);
     }
 
     function getMyPortfolio() external view returns (Portfolio memory) {
-        string memory userName = addressToPortfolio[msg.sender];
-        require(bytes(userName).length > 0, "Portfolio not found");
-        return portfolios[userName];
+        bytes32 hash = addressToUsername[msg.sender];
+        require(hash != bytes32(0), "Portfolio not found");
+        return portfolios[hash];
     }
 
-    function getPortfolioByUsername(string memory _userName) external view returns (Portfolio memory) {
-        require(portfolios[_userName].exists, "Portfolio not found");
+    function getPortfolioByUsername(
+        string calldata _userName
+    ) external view returns (Portfolio memory) {
+        bytes32 hash = _usernameHash(_userName);
+        Portfolio memory p = portfolios[hash];
 
-        if (portfolios[_userName].isPrivate) {
-            require(portfolios[_userName].ethAddress == msg.sender, "Private portfolio");
+        require(p.exists, "Portfolio not found");
+
+        if (p.isPrivate) {
+            require(p.ethAddress == msg.sender, "Private portfolio");
         }
 
-        return portfolios[_userName];
+        return p;
     }
 
     function donate() external payable whenNotPaused {
@@ -100,10 +132,6 @@ contract Web3Portfolio is Ownable, Pausable {
         (bool ok,) = owner().call{value: amount}("");
         require(ok, "Withdraw failed");
         emit DonationWithdrawn(owner(), amount);
-    }
-
-    function transferContractOwnership(address newOwner) external onlyOwner {
-        transferOwnership(newOwner);
     }
 
     function pause() external onlyOwner {
