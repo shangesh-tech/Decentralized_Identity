@@ -51,16 +51,6 @@ export default async function PortfolioProfilePage({ params }: PageProps) {
     return (
         <div className="min-h-screen bg-gray-50">
             <div className="mx-auto max-w-7xl px-4 py-8 md:px-8">
-                {/* Back button */}
-                <div className="mb-6">
-                    <Link
-                        href="/"
-                        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-900 transition"
-                    >
-                        ← Back to all portfolios
-                    </Link>
-                </div>
-
                 {/* MacBook mockup for desktop, plain card for mobile */}
                 <div className="flex justify-center">
                     {/* Mobile: Simple card (no mockup) */}
@@ -230,22 +220,33 @@ export default async function PortfolioProfilePage({ params }: PageProps) {
                             </div>
                         </div>
 
-                        <div className="mt-6 flex gap-3">
-                            <a
-                                href={profile.website}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="flex-1 inline-flex items-center justify-center gap-2 rounded-full bg-gray-900 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-black transition"
-                            >
-                                <FaGlobe className="text-xs" />
-                                Website
-                            </a>
-                            <a
-                                href={`mailto:${profile.email}`}
-                                className="flex-1 inline-flex items-center justify-center gap-2 rounded-full bg-white border border-gray-300 px-5 py-2.5 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 transition"
-                            >
-                                ✉️ Contact
-                            </a>
+                        <div className="mt-16 flex flex-col items-center animate-fade-in-up">
+                            <div className="flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/50 backdrop-blur-sm border border-white/60 shadow-sm hover:shadow-md transition-all duration-300">
+                                <span className="text-xs font-medium text-gray-500 tracking-wide uppercase">Powered by</span>
+                                <div className="flex items-center gap-2 pl-2 border-l border-gray-200">
+                                    {/* Ethereum Logo */}
+                                    <div className="flex items-center gap-1.5 group">
+                                        <img
+                                            src="https://cryptologos.cc/logos/ethereum-eth-logo.png"
+                                            alt="Ethereum"
+                                            className="h-5 w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity"
+                                        />
+                                        <span className="text-sm font-semibold text-gray-700 group-hover:text-gray-900 transition-colors">Ethereum</span>
+                                    </div>
+
+                                    <span className="text-gray-300 px-1 font-light">×</span>
+
+                                    {/* Polygon Logo */}
+                                    <div className="flex items-center gap-1.5 group">
+                                        <img
+                                            src="https://cryptologos.cc/logos/polygon-matic-logo.png"
+                                            alt="Polygon"
+                                            className="h-5 w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity"
+                                        />
+                                        <span className="text-sm font-semibold text-gray-700 group-hover:text-gray-900 transition-colors">Polygon</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -576,23 +577,33 @@ export default async function PortfolioProfilePage({ params }: PageProps) {
                                 <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[100%] h-[20px] bg-black/20 blur-xl rounded-[50%]"></div>
                             </div>
 
-                            {/* Action buttons */}
-                            <div className="mt-10 flex gap-4 justify-center">
-                                <a
-                                    href={profile.website}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="inline-flex items-center gap-2 rounded-full bg-gray-900 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-black transition"
-                                >
-                                    <FaGlobe />
-                                    Visit website
-                                </a>
-                                <a
-                                    href={`mailto:${profile.email}`}
-                                    className="inline-flex items-center gap-2 rounded-full bg-white border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 transition"
-                                >
-                                    ✉️ Contact
-                                </a>
+                            <div className="mt-16 flex flex-col items-center animate-fade-in-up">
+                                <div className="flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/50 backdrop-blur-sm border border-white/60 shadow-sm hover:shadow-md transition-all duration-300">
+                                    <span className="text-xs font-medium text-gray-500 tracking-wide uppercase">Powered by</span>
+                                    <div className="flex items-center gap-2 pl-2 border-l border-gray-200">
+                                        {/* Ethereum Logo */}
+                                        <div className="flex items-center gap-1.5 group">
+                                            <img
+                                                src="https://cryptologos.cc/logos/ethereum-eth-logo.png"
+                                                alt="Ethereum"
+                                                className="h-5 w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity"
+                                            />
+                                            <span className="text-sm font-semibold text-gray-700 group-hover:text-gray-900 transition-colors">Ethereum</span>
+                                        </div>
+
+                                        <span className="text-gray-300 px-1 font-light">×</span>
+
+                                        {/* Polygon Logo */}
+                                        <div className="flex items-center gap-1.5 group">
+                                            <img
+                                                src="https://cryptologos.cc/logos/polygon-matic-logo.png"
+                                                alt="Polygon"
+                                                className="h-5 w-auto object-contain opacity-80 group-hover:opacity-100 transition-opacity"
+                                            />
+                                            <span className="text-sm font-semibold text-gray-700 group-hover:text-gray-900 transition-colors">Polygon</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

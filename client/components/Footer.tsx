@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-6 text-sm text-gray-500 md:flex-row md:items-center md:justify-between md:px-8">
         <div className="flex flex-col gap-1">
           <p className="font-medium text-gray-700">
-            Built for Web3 builders.
+            Built by <span className="font-bold text-gray-900 text-lg">Shangesh S</span>
           </p>
           <p className="text-xs">
             Craft your on‑chain portfolio, showcase projects, and share it as a
@@ -17,17 +17,6 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col items-start gap-3 md:flex-row md:items-center md:gap-6">
-          <div className="flex gap-4 text-xs">
-            <a href="#portfolio" className="hover:text-gray-900">
-              Portfolio
-            </a>
-            <a href="#projects" className="hover:text-gray-900">
-              Projects
-            </a>
-            <a href="#contact" className="hover:text-gray-900">
-              Contact
-            </a>
-          </div>
 
           <div className="flex items-center gap-3 text-gray-500">
             <a
