@@ -75,20 +75,25 @@ export default function PortfolioOnboardPage() {
       <div className="mx-auto max-w-7xl px-4 py-8 md:px-8">
         <div className="flex flex-col lg:flex-row gap-10">
           {/* LEFT: fixed phone mockup */}
-          <div className="lg:w-[400px] lg:flex-shrink-0">
+          <div className="lg:w-[400px] lg:shrink-0">
             <div className="lg:sticky lg:top-6 flex justify-center">
-              <div className="relative w-[320px] sm:w-[360px] h-[640px] border-[14px] border-gray-900 rounded-[40px] shadow-2xl bg-white overflow-hidden">
+              <div className="relative w-[320px] sm:w-[360px] h-[640px] border-14 border-gray-900 rounded-[40px] shadow-2xl bg-white overflow-hidden">
                 {/* Notch */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[28px] bg-gray-900 rounded-b-[20px] z-10" />
 
                 {/* Content with user-selected bg color */}
                 <div
-                  className="h-full overflow-y-auto scrollbar-hide px-5 pb-6 pt-12"
-                  style={{ backgroundColor: form.bgColor }}
+                  className="h-full overflow-y-auto px-5 pb-6 pt-12 [&::-webkit-scrollbar]:hidden"
+                  style={{
+                    backgroundColor: form.bgColor,
+                    scrollbarWidth: "none",
+                    msOverflowStyle: "none"
+                  }}
                 >
+
                   {/* Top section */}
                   <div className="flex flex-col items-center text-center">
-                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-gray-800 to-gray-600 flex items-center justify-center text-3xl text-white shadow-lg overflow-hidden">
+                    <div className="w-24 h-24 rounded-full bg-linear-to-br from-gray-800 to-gray-600 flex items-center justify-center text-3xl text-white shadow-lg overflow-hidden">
                       {avatarPreview ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
@@ -404,7 +409,7 @@ export default function PortfolioOnboardPage() {
                     value={form.linkedin}
                     onChange={handleChange}
                     placeholder="https://linkedin.com/in/username"
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900"
                   />
                 </div>
                 <div>

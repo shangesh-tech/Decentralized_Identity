@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Decentralized Portfolio",
-  description: "On-chain profile builder",
+  description: "Craft your on‑chain portfolio, showcase projects, and share it as a single link.",
 };
 
 export default function RootLayout({
