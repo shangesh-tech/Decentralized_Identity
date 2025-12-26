@@ -142,6 +142,10 @@ export default function Web3Connect() {
                 chain={defaultChain}
                 autoConnect={true}
                 theme="light"
+                accountAbstraction={{
+                    chain: defaultChain,
+                    sponsorGas: true,
+                }}
                 connectModal={{
                     size: "wide",
                     title: "Decentralized Portfolio",
