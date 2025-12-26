@@ -11,9 +11,7 @@ import {
   Calendar,
   ExternalLink,
   Plus,
-  Rocket,
   Copy,
-  Check
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -23,7 +21,6 @@ const userPortfolio = {
   name: "Jai Menon",
   role: "Blockchain & Web3 Engineer",
   location: "Bangalore, India",
-  headline: "Building MEV-safe DEXs and multi-chain wallets.",
   createdAt: "Dec 18, 2025",
   email: "jai.menon@example.com",
   website: "https://jaimenon.xyz",
@@ -45,24 +42,13 @@ export default function Home() {
   const handleCopyUrl = () => {
     const url = `${window.location.origin}/portfolio/${userPortfolio.id}`;
     navigator.clipboard.writeText(url);
-    toast.success("Public URL copied to clipboard!", {
-      icon: '🔗',
-      style: {
-        borderRadius: '10px',
-        background: '#333',
-        color: '#fff',
-      },
-    });
+    toast.success("Public URL copied to clipboard!");
   };
 
   return (
     <main className="flex min-h-[calc(100vh-80px)] items-center justify-center bg-gray-50 px-4 py-10 md:px-8">
       {hasPortfolio ? (
         <div className="flex w-full max-w-lg flex-col items-center justify-center text-center">
-          <div className="mb-8 flex h-24 w-24 items-center justify-center rounded-3xl bg-white shadow-xl ring-1 ring-gray-100">
-            <Rocket className="h-10 w-10 text-gray-900" />
-          </div>
-
           <h1 className="mb-3 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
             No portfolio yet
           </h1>
@@ -87,7 +73,7 @@ export default function Home() {
 
           <div className="overflow-hidden rounded-3xl bg-white shadow-xl ring-1 ring-gray-200/50">
             {/* Header / Cover area */}
-            <div className="h-32 bg-gradient-to-r from-gray-900 to-gray-700 sm:h-40" />
+            <div className="h-32 bg-linear-to-r from-gray-900 to-gray-700 sm:h-40" />
 
             <div className="relative px-6 pb-8 sm:px-10">
               {/* Avatar - overlapping the cover */}
@@ -137,15 +123,11 @@ export default function Home() {
                     <MapPin className="h-4 w-4" /> {userPortfolio.location}
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <Calendar className="h-4 w-4" /> Joined {userPortfolio.createdAt}
+                    <Calendar className="h-4 w-4" /> Created at {userPortfolio.createdAt}
                   </span>
                 </div>
 
                 <div className="my-6 border-t border-gray-100" />
-
-                <p className="text-base leading-relaxed text-gray-700">
-                  {userPortfolio.headline}
-                </p>
 
                 {/* Quick Links */}
                 <div className="mt-6 flex flex-wrap gap-3">
